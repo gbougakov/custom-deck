@@ -1,0 +1,27 @@
+<style>
+    body {
+        font-family: sans-serif;
+    }
+</style>
+
+<label for="deckFilePicker">Choose a deck file to replace the current deck</label>
+<div style="margin-top: 4px;"><input type="file" id="deckFilePicker"></div>
+<hr style="margin-top: 16px; margin-bottom: 16px;">
+<p>Get some decks <a href="https://gbgk.notion.site/Decks-9de38cd0441e49c68074f11df56aaeec" target="_blank">here</a> or <a href="https://gbgk.notion.site/How-to-make-your-own-deck-2887eae9ced941f99c57f8eb41f1c648" target="_blank">make your own</a></p>
+
+<script>
+  const deckPicker = document.getElementById("deckFilePicker");
+  deckPicker.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      reader.onload = (event) => {
+        const cards = event.target.result.split('\n')
+        console.log(cards)
+        parent.postMessage({ pluginMessage: { type: "update-deck", cards } }, "*");
+      }
+    }
+
+  };
+</script>
